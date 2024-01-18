@@ -21,7 +21,7 @@ class DataHandler:
         elif args.data == 'lastfm':
             predir = '../Datasets/lastfm/'
         else:
-            predir = f'../Datasets/args.data/'
+            predir = f'../Datasets/{args.data}/'
         self.predir = predir
         self.trnfile = predir + 'trnMat.pkl'
         self.tstfile = predir + 'tstMat.pkl'
