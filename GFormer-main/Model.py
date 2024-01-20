@@ -297,10 +297,14 @@ class RandomMaskSubgraphs(nn.Module):
 
         att_f = att_edge
         att_f[att_f > 3] = 3
-        att_f = 1.0 / (np.exp(np.array(att_f.detach().cpu() + 1E-8)))
+        # att_f = 1.0 / (np.exp(np.array(att_f.detach().cpu() + 1E-8)))
+        att_f = 1.0 / (np.exp(np.array(att_f.detach().cpu())) + 1E-8)
         att_f1 = att_f / att_f.sum()
 
-        att_f1[np.isnan(att_f1)] = 0
+        # Error is occur in thaere.
+        print(att_f1)
+
+        att_f1[np.isnan(att_f1)] = 1.0
 
         keep_index = np.random.choice(np.arange(len(users_up.cpu())), int(len(users_up.cpu()) * args.keepRate),
                                           replace=False, p=att_f1)
