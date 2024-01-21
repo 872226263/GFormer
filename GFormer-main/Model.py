@@ -302,10 +302,11 @@ class RandomMaskSubgraphs(nn.Module):
         att_f1 = att_f / att_f.sum()
 
         # Error occurs in there.
-        with open("debug.txt", "w") as f:
-            f.writelines("\n".join(map(str, att_f1)))
-
-        att_f1[np.isnan(att_f1)] = 1.0
+        if np.isnan(att_f1).any():
+            with open("debug.txt", "w") as f:
+                f.writelines(",".join(map(str, att_f)))
+                f.writelines(",".join(map(str, att_f1)))
+            att_f1[np.isnan(att_f1)] = 1.0
 
         keep_index = np.random.choice(np.arange(len(users_up.cpu())), int(len(users_up.cpu()) * args.keepRate),
                                           replace=False, p=att_f1)
